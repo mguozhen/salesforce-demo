@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Salesforce — The #1 AI CRM</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sf-blue: #032D60;
+      --sf-blue-mid: #0176D3;
+      --sf-blue-light: #1B96FF;
+      --sf-teal: #06A59A;
+      --sf-purple: #9050E9;
+      --sf-gray: #F3F3F3;
+      --sf-border: #E5E5E5;
+      --sf-text: #181818;
+      --sf-mid: #444;
+    }
+
+    body { font-family: 'Salesforce Sans', 'Helvetica Neue', Arial, sans-serif; color: var(--sf-text); line-height: 1.6; overflow-x: hidden; }
+
+    /* ── NAV ── */
+    nav {
+      background: #fff;
+      border-bottom: 1px solid var(--sf-border);
+      padding: 0 40px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo svg { width: 120px; height: 32px; }
+    .cloud-logo {
+      background: var(--sf-blue-mid);
+      border-radius: 50%;
+      width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 20px;
+    }
+    .nav-logo-text { font-size: 20px; font-weight: 700; color: var(--sf-blue); letter-spacing: -0.5px; }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a { text-decoration: none; color: var(--sf-text); font-size: 14px; font-weight: 500; }
+    .nav-links a:hover { color: var(--sf-blue-mid); }
+    .nav-right { display: flex; gap: 12px; align-items: center; }
+    .btn-ghost { border: 1px solid var(--sf-blue-mid); color: var(--sf-blue-mid); padding: 8px 18px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 600; }
+    .btn-ghost:hover { background: #f0f7ff; }
+    .btn-nav { background: var(--sf-blue-mid); color: #fff; padding: 8px 18px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 600; }
+    .btn-nav:hover { background: var(--sf-blue); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(160deg, #032D60 0%, #0176D3 50%, #06A59A 100%);
+      color: #fff;
+      padding: 100px 40px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 800px; height: 800px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      top: -200px; right: -200px;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      bottom: -200px; left: -100px;
+    }
+    .hero-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-eyebrow { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.75); margin-bottom: 20px; }
+    .hero h1 { font-size: 56px; font-weight: 900; line-height: 1.1; margin-bottom: 16px; letter-spacing: -1px; }
+    .hero h1 .accent { color: #67D2DF; }
+    .hero-sub { font-size: 22px; color: rgba(255,255,255,0.85); margin-bottom: 12px; font-weight: 400; }
+    .hero-tagline { font-size: 16px; color: rgba(255,255,255,0.65); margin-bottom: 40px; }
+    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
+    .btn-white { background: #fff; color: var(--sf-blue); padding: 14px 32px; border-radius: 4px; text-decoration: none; font-size: 16px; font-weight: 700; transition: all 0.2s; }
+    .btn-white:hover { background: #f0f7ff; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+    .btn-outline-w { border: 2px solid rgba(255,255,255,0.6); color: #fff; padding: 12px 32px; border-radius: 4px; text-decoration: none; font-size: 16px; font-weight: 700; transition: all 0.2s; }
+    .btn-outline-w:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+
+    .hero-stats { display: flex; gap: 0; justify-content: center; background: rgba(255,255,255,0.1); border-radius: 12px; backdrop-filter: blur(8px); padding: 32px 48px; }
+    .hero-stat { flex: 1; text-align: center; padding: 0 32px; border-right: 1px solid rgba(255,255,255,0.2); }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat-num { font-size: 40px; font-weight: 900; color: #67D2DF; }
+    .hero-stat-label { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 4px; }
+
+    /* ── SECTIONS ── */
+    section { padding: 80px 40px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-tag { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--sf-blue-mid); margin-bottom: 10px; }
+    .section-title { font-size: 40px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 14px; color: var(--sf-blue); }
+    .section-sub { font-size: 18px; color: var(--sf-mid); max-width: 640px; margin-bottom: 56px; }
+    .text-center { text-align: center; }
+    .text-center .section-sub { margin-left: auto; margin-right: auto; }
+
+    /* ── PRODUCTS ── */
+    .products { background: var(--sf-gray); }
+    .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .product-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 36px;
+      border: 1px solid var(--sf-border);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .product-card:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.08); transform: translateY(-4px); }
+    .product-icon { width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 20px; }
+    .icon-blue { background: #E8F4FF; }
+    .icon-teal { background: #E6F9F8; }
+    .icon-purple { background: #F3ECFF; }
+    .icon-yellow { background: #FFF8E6; }
+    .product-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--sf-blue-mid); margin-bottom: 8px; }
+    .product-card h3 { font-size: 22px; font-weight: 800; color: var(--sf-blue); margin-bottom: 10px; }
+    .product-card p { font-size: 15px; color: var(--sf-mid); margin-bottom: 20px; line-height: 1.6; }
+    .product-link { color: var(--sf-blue-mid); font-size: 14px; font-weight: 700; text-decoration: none; }
+    .product-link:hover { text-decoration: underline; }
+    .product-stat { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--sf-border); font-size: 13px; color: var(--sf-mid); }
+    .product-stat strong { color: var(--sf-blue); font-size: 20px; font-weight: 800; }
+
+    /* ── AGENTFORCE BANNER ── */
+    .agentforce {
+      background: linear-gradient(135deg, var(--sf-blue) 0%, #0b5cb8 100%);
+      color: #fff;
+    }
+    .agentforce-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .agentforce h2 { font-size: 44px; font-weight: 900; color: #fff; margin-bottom: 20px; letter-spacing: -0.5px; }
+    .agentforce p { font-size: 17px; color: rgba(255,255,255,0.8); margin-bottom: 32px; line-height: 1.7; }
+    .agentforce-features { display: flex; flex-direction: column; gap: 20px; }
+    .af-feature { display: flex; gap: 16px; align-items: flex-start; }
+    .af-icon { width: 44px; height: 44px; background: rgba(255,255,255,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .af-feature h4 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .af-feature p { font-size: 13px; color: rgba(255,255,255,0.7); margin: 0; }
+    .agentforce-visual { background: rgba(255,255,255,0.08); border-radius: 16px; padding: 32px; border: 1px solid rgba(255,255,255,0.15); }
+    .agent-chat { display: flex; flex-direction: column; gap: 16px; }
+    .chat-bubble { padding: 12px 16px; border-radius: 12px; font-size: 14px; max-width: 85%; }
+    .chat-user { background: rgba(255,255,255,0.15); color: #fff; align-self: flex-end; border-radius: 12px 12px 2px 12px; }
+    .chat-agent { background: #fff; color: var(--sf-text); align-self: flex-start; border-radius: 12px 12px 12px 2px; }
+    .chat-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; opacity: 0.6; }
+    .chat-resolved { text-align: center; margin-top: 8px; }
+    .resolved-badge { display: inline-block; background: var(--sf-teal); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
+
+    /* ── INDUSTRIES ── */
+    .industries { background: #fff; }
+    .industries-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .industry-card {
+      border: 1px solid var(--sf-border);
+      border-radius: 10px;
+      padding: 24px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .industry-card:hover { border-color: var(--sf-blue-mid); box-shadow: 0 4px 16px rgba(1,118,211,0.1); }
+    .industry-icon { font-size: 32px; margin-bottom: 10px; }
+    .industry-card h4 { font-size: 14px; font-weight: 700; color: var(--sf-blue); }
+
+    /* ── STATS ── */
+    .stats { background: var(--sf-blue); color: #fff; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; text-align: center; }
+    .stat-num { font-size: 52px; font-weight: 900; color: #67D2DF; line-height: 1; }
+    .stat-label { font-size: 15px; color: rgba(255,255,255,0.8); margin-top: 8px; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { background: var(--sf-gray); }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .testi-card { background: #fff; border-radius: 12px; padding: 32px; border: 1px solid var(--sf-border); display: flex; flex-direction: column; }
+    .testi-logo { font-size: 13px; font-weight: 800; color: var(--sf-blue); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+    .testi-quote { font-size: 15px; color: var(--sf-mid); line-height: 1.7; flex: 1; font-style: italic; margin-bottom: 20px; }
+    .testi-author { font-size: 13px; font-weight: 700; color: var(--sf-text); }
+    .testi-title { font-size: 12px; color: #888; }
+    .testi-stat { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--sf-border); font-size: 22px; font-weight: 900; color: var(--sf-blue-mid); }
+    .testi-stat span { display: block; font-size: 12px; font-weight: 400; color: #888; margin-top: 2px; }
+
+    /* ── AGENTBLAZER ── */
+    .agentblazer {
+      background: linear-gradient(135deg, #9050E9 0%, #5A1BA9 100%);
+      color: #fff;
+      text-align: center;
+    }
+    .agentblazer .section-title { color: #fff; }
+    .agentblazer .section-sub { color: rgba(255,255,255,0.8); margin-left: auto; margin-right: auto; }
+    .blazer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .blazer-card { background: rgba(255,255,255,0.12); border-radius: 12px; padding: 32px; border: 1px solid rgba(255,255,255,0.2); }
+    .blazer-badge { font-size: 40px; margin-bottom: 16px; }
+    .blazer-card h3 { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .blazer-card p { font-size: 14px; color: rgba(255,255,255,0.75); }
+
+    /* ── CTA BAND ── */
+    .cta-band { background: #fff; border-top: 1px solid var(--sf-border); text-align: center; }
+    .cta-band h2 { font-size: 40px; font-weight: 900; color: var(--sf-blue); margin-bottom: 16px; }
+    .cta-band p { font-size: 17px; color: var(--sf-mid); margin-bottom: 36px; }
+    .cta-btns { display: flex; gap: 16px; justify-content: center; }
+    .btn-blue { background: var(--sf-blue-mid); color: #fff; padding: 14px 32px; border-radius: 4px; text-decoration: none; font-size: 16px; font-weight: 700; }
+    .btn-blue:hover { background: var(--sf-blue); }
+    .btn-outline-b { border: 2px solid var(--sf-blue-mid); color: var(--sf-blue-mid); padding: 12px 32px; border-radius: 4px; text-decoration: none; font-size: 16px; font-weight: 700; }
+    .btn-outline-b:hover { background: #f0f7ff; }
+
+    /* ── FOOTER ── */
+    footer { background: #16325C; color: rgba(255,255,255,0.65); padding: 60px 40px 32px; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+    .footer-brand .brand-logo { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 12px; }
+    .footer-brand p { font-size: 13px; line-height: 1.7; max-width: 220px; }
+    .footer-col h4 { color: #fff; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col ul li a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 13px; }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; display: flex; justify-content: space-between; font-size: 12px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .products-grid, .agentforce-grid, .testimonials-grid, .blazer-grid { grid-template-columns: 1fr; }
+      .industries-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .hero h1 { font-size: 38px; }
+      .hero-stats { flex-direction: column; gap: 20px; }
+      .hero-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.2); padding: 0 0 20px 0; }
+      .hero-stat:last-child { border-bottom: none; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 56px 20px; }
+      nav { padding: 0 20px; }
+      .products-grid, .industries-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .cta-btns { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="cloud-logo">☁️</div>
+    <span class="nav-logo-text">Salesforce</span>
+  </a>
+  <div class="nav-links">
+    <a href="#">Products</a>
+    <a href="#">Industries</a>
+    <a href="#">Customers</a>
+    <a href="#">Learn</a>
+    <a href="#">Company</a>
+  </div>
+  <div class="nav-right">
+    <a href="#" class="btn-ghost">Log In</a>
+    <a href="#" class="btn-nav">Start for Free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Salesforce — The #1 AI CRM</div>
+    <h1>Welcome to the<br><span class="accent">Agentic Enterprise.</span></h1>
+    <p class="hero-sub">Where humans and agents drive customer success together.</p>
+    <p class="hero-tagline">Voted the #1 Global Software Company on G2</p>
+    <div class="hero-btns">
+      <a href="#" class="btn-white">Start for Free</a>
+      <a href="#agentforce" class="btn-outline-w">See Agentforce in Action</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">3M+</div>
+        <div class="hero-stat-label">Conversations handled by Agentforce</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">66%</div>
+        <div class="hero-stat-label">Autonomous case resolution</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">15%</div>
+        <div class="hero-stat-label">More marketing pipeline</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">1.8x</div>
+        <div class="hero-stat-label">Higher lead conversion</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products">
+  <div class="section-inner">
+    <div class="section-tag text-center" style="text-align:center">The Platform</div>
+    <h2 class="section-title text-center" style="text-align:center">One Integrated Platform.<br>Infinite Possibilities.</h2>
+    <p class="section-sub" style="text-align:center;margin:0 auto 56px">Four powerful components that work together to connect your teams, data, and customers.</p>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-icon icon-yellow">💬</div>
+        <div class="product-tag">Collaboration</div>
+        <h3>Slack</h3>
+        <p>The conversational interface where humans and agents work together. Connect every team, tool, and workflow in one place — powered by AI.</p>
+        <a href="#" class="product-link">Learn more →</a>
+        <div class="product-stat"><strong>50%</strong> faster decision-making with Slack AI</div>
+      </div>
+      <div class="product-card">
+        <div class="product-icon icon-blue">🤖</div>
+        <div class="product-tag">AI Agents</div>
+        <h3>Agentforce</h3>
+        <p>Delivers always-on AI agents for customers and employees. Handle service cases, generate leads, and execute tasks — autonomously, 24/7.</p>
+        <a href="#agentforce" class="product-link">Learn more →</a>
+        <div class="product-stat"><strong>66%</strong> autonomous case resolution rate</div>
+      </div>
+      <div class="product-card">
+        <div class="product-icon icon-teal">🌐</div>
+        <div class="product-tag">CRM Platform</div>
+        <h3>Customer 360</h3>
+        <p>Helps teams sell, service, market, and operate at scale. A complete view of every customer across sales, service, marketing, and commerce.</p>
+        <a href="#" class="product-link">Learn more →</a>
+        <div class="product-stat"><strong>1.8x</strong> higher lead-to-deal conversion</div>
+      </div>
+      <div class="product-card">
+        <div class="product-icon icon-purple">📊</div>
+        <div class="product-tag">Data Platform</div>
+        <h3>Data 360</h3>
+        <p>Gives humans and agents shared, real-time context. Unify all your customer data, analytics, and AI in one trusted platform.</p>
+        <a href="#" class="product-link">Learn more →</a>
+        <div class="product-stat"><strong>360°</strong> unified customer data view</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENTFORCE -->
+<section class="agentforce" id="agentforce">
+  <div class="section-inner">
+    <div class="agentforce-grid">
+      <div>
+        <div class="section-tag" style="color:rgba(255,255,255,0.65)">Agentforce</div>
+        <h2>AI That Actually<br>Does the Work.</h2>
+        <p>Agentforce deploys autonomous AI agents that handle customer inquiries, close service cases, qualify leads, and take action — all without human intervention, around the clock.</p>
+        <a href="#" class="btn-white" style="display:inline-block">See Agentforce in Action</a>
+        <div class="agentforce-features" style="margin-top:40px">
+          <div class="af-feature">
+            <div class="af-icon">⚡</div>
+            <div>
+              <h4>Always-On Availability</h4>
+              <p>Agents work 24/7 across every channel — chat, email, voice, and messaging apps.</p>
+            </div>
+          </div>
+          <div class="af-feature">
+            <div class="af-icon">🔗</div>
+            <div>
+              <h4>Connected to Your Data</h4>
+              <p>Every agent has access to real-time CRM data, order history, and customer context.</p>
+            </div>
+          </div>
+          <div class="af-feature">
+            <div class="af-icon">🛡️</div>
+            <div>
+              <h4>Safe & Trustworthy</h4>
+              <p>Built-in guardrails, audit logs, and human handoff when needed. AI you can trust.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="agentforce-visual">
+        <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.5);margin-bottom:20px">Live Agent Conversation</p>
+        <div class="agent-chat">
+          <div class="chat-bubble chat-user">
+            <div class="chat-label">Customer</div>
+            My order #SF-48291 hasn't arrived. It was supposed to be here 3 days ago.
+          </div>
+          <div class="chat-bubble chat-agent">
+            <div class="chat-label">Agentforce AI</div>
+            I found your order — it's currently in transit with UPS. There was a weather delay in Denver. New estimated delivery: <strong>tomorrow by 8 PM</strong>. I've also applied a $15 credit to your account for the inconvenience. 📦
+          </div>
+          <div class="chat-bubble chat-user">
+            <div class="chat-label">Customer</div>
+            That's great, thank you! Can you also change my delivery address?
+          </div>
+          <div class="chat-bubble chat-agent">
+            <div class="chat-label">Agentforce AI</div>
+            Done! I've updated your delivery address to the new location. You'll receive a confirmation email shortly. Is there anything else I can help with? ✅
+          </div>
+          <div class="chat-resolved">
+            <span class="resolved-badge">✓ Case Resolved Autonomously</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section class="industries">
+  <div class="section-inner">
+    <div class="section-tag text-center" style="text-align:center">Built for Your Industry</div>
+    <h2 class="section-title" style="text-align:center">Solutions for Every Industry</h2>
+    <p class="section-sub" style="text-align:center;margin:0 auto 48px">Pre-built solutions tailored to your industry's unique workflows and compliance needs.</p>
+    <div class="industries-grid">
+      <div class="industry-card"><div class="industry-icon">🏦</div><h4>Financial Services</h4></div>
+      <div class="industry-card"><div class="industry-icon">🛍️</div><h4>Retail</h4></div>
+      <div class="industry-card"><div class="industry-icon">🏥</div><h4>Healthcare & Life Sciences</h4></div>
+      <div class="industry-card"><div class="industry-icon">🏗️</div><h4>Construction & Real Estate</h4></div>
+      <div class="industry-card"><div class="industry-icon">🎓</div><h4>Education</h4></div>
+      <div class="industry-card"><div class="industry-icon">💼</div><h4>Professional Services</h4></div>
+      <div class="industry-card"><div class="industry-icon">💻</div><h4>Technology</h4></div>
+      <div class="industry-card"><div class="industry-icon">🏭</div><h4>Manufacturing</h4></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="section-inner">
+    <div class="stats-grid">
+      <div><div class="stat-num">150K+</div><div class="stat-label">Companies trust Salesforce</div></div>
+      <div><div class="stat-num">3M+</div><div class="stat-label">Agentforce conversations handled</div></div>
+      <div><div class="stat-num">#1</div><div class="stat-label">Global AI CRM — G2 2026</div></div>
+      <div><div class="stat-num">$26B+</div><div class="stat-label">Annual revenue</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-inner">
+    <div class="section-tag" style="text-align:center">Customer Stories</div>
+    <h2 class="section-title" style="text-align:center">Trusted by the World's<br>Leading Brands</h2>
+    <p class="section-sub" style="text-align:center;margin:0 auto 48px">See how companies across every industry use Salesforce to grow faster and serve better.</p>
+    <div class="testimonials-grid">
+      <div class="testi-card">
+        <div class="testi-logo">🔵 PepsiCo</div>
+        <p class="testi-quote">"Salesforce has given us a single source of truth for our customer data. We've transformed how we engage with retailers and consumers globally — faster, smarter, and more personally than ever before."</p>
+        <div class="testi-author">Chief Digital Officer</div>
+        <div class="testi-title">PepsiCo</div>
+        <div class="testi-stat">40% <span>faster campaign execution</span></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-logo">⬡ Volkswagen Group</div>
+        <p class="testi-quote">"With Agentforce handling tier-1 support, our human agents now focus on complex, high-value customer interactions. The autonomous resolution rate has exceeded every expectation we had."</p>
+        <div class="testi-author">VP of Customer Experience</div>
+        <div class="testi-title">Volkswagen Group</div>
+        <div class="testi-stat">66% <span>autonomous case resolution</span></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-logo">✈️ Heathrow Airport</div>
+        <p class="testi-quote">"Salesforce allows us to give every passenger a connected experience — from booking through to arrival. Our teams have full visibility and our AI agents handle millions of passenger queries seamlessly."</p>
+        <div class="testi-author">Head of Digital Experience</div>
+        <div class="testi-title">Heathrow Airport</div>
+        <div class="testi-stat">35M+ <span>passengers served annually</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENTBLAZER -->
+<section class="agentblazer">
+  <div class="section-inner">
+    <div class="section-tag" style="color:rgba(255,255,255,0.65);text-align:center">Learn & Grow</div>
+    <h2 class="section-title" style="text-align:center">Become an Agentblazer</h2>
+    <p class="section-sub" style="text-align:center;margin:0 auto 48px">Join millions of Trailblazers building the skills to thrive in the agentic era. Free learning on Trailhead.</p>
+    <div class="blazer-grid">
+      <div class="blazer-card">
+        <div class="blazer-badge">🥉</div>
+        <h3>Champion</h3>
+        <p>Master the foundations of AI and Agentforce. Learn to build and deploy your first AI agent with hands-on trails.</p>
+      </div>
+      <div class="blazer-card">
+        <div class="blazer-badge">🥈</div>
+        <h3>Innovator</h3>
+        <p>Design complex multi-agent architectures and integrate Agentforce with your existing Salesforce ecosystem.</p>
+      </div>
+      <div class="blazer-card">
+        <div class="blazer-badge">🥇</div>
+        <h3>Legend</h3>
+        <p>Lead enterprise-scale agentic transformation. Become a certified architect and community leader.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px">
+      <a href="#" class="btn-white">Start Learning Free on Trailhead →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band">
+  <div class="section-inner">
+    <h2>Ready to Build Your<br>Agentic Enterprise?</h2>
+    <p>Start free, scale fast. No credit card required.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-blue">Start for Free</a>
+      <a href="#" class="btn-outline-b">Talk to an Expert</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand-logo">☁️ Salesforce</div>
+        <p>The world's #1 AI CRM, helping companies of every size grow revenue, improve customer relationships, and work smarter with AI.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#">Agentforce</a></li>
+          <li><a href="#">Sales Cloud</a></li>
+          <li><a href="#">Service Cloud</a></li>
+          <li><a href="#">Marketing Cloud</a></li>
+          <li><a href="#">Commerce Cloud</a></li>
+          <li><a href="#">Slack</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="#">Small Business</a></li>
+          <li><a href="#">Enterprise</a></li>
+          <li><a href="#">By Industry</a></li>
+          <li><a href="#">Agentforce</a></li>
+          <li><a href="#">AI & Data</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Trailhead</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Podcast</a></li>
+          <li><a href="#">Webinars</a></li>
+          <li><a href="#">Documentation</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Newsroom</a></li>
+          <li><a href="#">Investors</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Salesforce, Inc. All rights reserved.</span>
+      <span style="display:flex;gap:20px">
+        <a href="#" style="color:rgba(255,255,255,0.5);text-decoration:none">Privacy</a>
+        <a href="#" style="color:rgba(255,255,255,0.5);text-decoration:none">Terms</a>
+        <a href="#" style="color:rgba(255,255,255,0.5);text-decoration:none">Cookie Preferences</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── SOLVEA CHATBOT ── -->
+<script>
+  !(function(){
+    const sc = document.createElement('script');
+    sc.src = "https://app.solvea.cx/api_v2/gpt/bots/livechat/embed.js?pid=702&token=22c21fb0eb33494dad3686ac479d9a35";
+    sc.async = true;
+    sc.defer = true;
+    document.body.appendChild(sc);
+  })()
+</script>
+
+</body>
+</html>
