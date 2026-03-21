@@ -4,6 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Salesforce — The #1 AI CRM</title>
+  <!-- ── Favicon ── -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230176D3'/><text y='.9em' font-size='80' x='10'>☁</text></svg>">
+  <!-- ── Open Graph ── -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Salesforce AI CRM — Powered by Solvea Voice Agent" />
+  <meta property="og:description" content="Experience AI-powered customer service. Talk to our voice agent 24/7. Call +1 (888) 888-8888 — no hold music, instant answers." />
+  <meta property="og:url" content="https://mguozhen.github.io/salesforce-demo/" />
+  <meta property="og:image" content="https://mguozhen.github.io/salesforce-demo/og-salesforce.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Salesforce + Solvea AI Voice Agent Demo" />
+  <meta name="twitter:description" content="See how AI transforms customer service. No hold time. No menus. 100+ languages. Powered by Solvea." />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -238,6 +249,21 @@
       .products-grid, .industries-grid { grid-template-columns: 1fr; }
       .stats-grid { grid-template-columns: 1fr 1fr; }
       .cta-btns { flex-direction: column; align-items: center; }
+    }
+
+    /* ── VOICE AGENT BAND — mobile ── */
+    @media (max-width: 600px) {
+      .voice-band { padding: 48px 20px !important; }
+      .voice-band h2 { font-size: 26px !important; }
+      .voice-band p { font-size: 14px !important; }
+      .voice-band .tel-link { font-size: 20px !important; padding: 14px 24px !important; gap: 10px !important; }
+      .voice-band .benefits { gap: 16px !important; }
+      .voice-band .benefits div { font-size: 12px !important; }
+    }
+    /* ── FLOATING CALL BUTTON — mobile ── */
+    @media (max-width: 600px) {
+      #call-float .float-label { display: none; }
+      #call-float { padding: 14px 16px !important; border-radius: 50% !important; bottom: 88px !important; }
     }
   </style>
 </head>
@@ -564,16 +590,16 @@
 </footer>
 
 <!-- ── VOICE AGENT BAND ── -->
-<section style="background:linear-gradient(135deg,#06A59A 0%,#032D60 100%);padding:60px 40px;text-align:center;color:#fff">
+<section class="voice-band" style="background:linear-gradient(135deg,#06A59A 0%,#032D60 100%);padding:60px 40px;text-align:center;color:#fff">
   <div style="max-width:700px;margin:0 auto">
     <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.65);margin-bottom:14px">🎙️ New — AI Voice Agent</div>
     <h2 style="font-size:38px;font-weight:900;margin-bottom:14px;letter-spacing:-0.5px">Talk to Our AI Agent.<br>Right Now. No Wait.</h2>
     <p style="font-size:17px;color:rgba(255,255,255,0.8);margin-bottom:12px">Experience the future of customer service — just call the number below and speak naturally. Our AI voice agent handles orders, questions, and support 24/7.</p>
     <p style="font-size:14px;color:rgba(255,255,255,0.55);margin-bottom:36px">No hold music. No menus. No humans needed — unless you want one.</p>
-    <a href="tel:+1888888888" style="display:inline-flex;align-items:center;gap:14px;background:#fff;color:#032D60;padding:18px 40px;border-radius:50px;text-decoration:none;font-size:28px;font-weight:900;letter-spacing:1px;box-shadow:0 8px 32px rgba(0,0,0,0.25);transition:transform 0.2s" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+    <a href="tel:+1888888888" class="tel-link" onclick="trackCall('voice-band')" style="display:inline-flex;align-items:center;gap:14px;background:#fff;color:#032D60;padding:18px 40px;border-radius:50px;text-decoration:none;font-size:28px;font-weight:900;letter-spacing:1px;box-shadow:0 8px 32px rgba(0,0,0,0.25);transition:transform 0.2s" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
       📞 <span>+1 (888) 888-8888</span>
     </a>
-    <div style="margin-top:28px;display:flex;gap:32px;justify-content:center;flex-wrap:wrap">
+    <div class="benefits" style="margin-top:28px;display:flex;gap:32px;justify-content:center;flex-wrap:wrap">
       <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:rgba(255,255,255,0.7)">✅ Available 24/7</div>
       <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:rgba(255,255,255,0.7)">✅ Average response &lt; 2 seconds</div>
       <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:rgba(255,255,255,0.7)">✅ Handles 100+ languages</div>
@@ -583,9 +609,9 @@
 </section>
 
 <!-- ── FLOATING CALL BUTTON ── -->
-<a href="tel:+1888888888" id="call-float" style="position:fixed;bottom:100px;right:24px;z-index:9999;background:linear-gradient(135deg,#06A59A,#032D60);color:#fff;padding:14px 20px;border-radius:50px;text-decoration:none;font-size:14px;font-weight:700;box-shadow:0 4px 20px rgba(0,0,0,0.3);display:flex;align-items:center;gap:8px;animation:pulse-call 2s infinite">
+<a href="tel:+1888888888" id="call-float" onclick="trackCall('float-btn')" style="position:fixed;bottom:100px;right:24px;z-index:9999;background:linear-gradient(135deg,#06A59A,#032D60);color:#fff;padding:14px 20px;border-radius:50px;text-decoration:none;font-size:14px;font-weight:700;box-shadow:0 4px 20px rgba(0,0,0,0.3);display:flex;align-items:center;gap:8px;animation:pulse-call 2s infinite">
   <span style="font-size:20px">📞</span>
-  <span>Try Voice Agent</span>
+  <span class="float-label">Try Voice Agent</span>
 </a>
 <style>
 @keyframes pulse-call {
@@ -593,6 +619,17 @@
   50% { box-shadow: 0 4px 32px rgba(6,165,154,0.8), 0 0 0 8px rgba(6,165,154,0.15); }
 }
 </style>
+<script>
+function trackCall(source) {
+  const entry = { ts: new Date().toISOString(), source, site: 'salesforce-demo', phone: '+1888888888' };
+  try {
+    const log = JSON.parse(localStorage.getItem('solvea_call_log') || '[]');
+    log.push(entry);
+    localStorage.setItem('solvea_call_log', JSON.stringify(log.slice(-50)));
+  } catch(e) {}
+  console.log('[Solvea] Call click:', entry);
+}
+</script>
 
 <!-- ── SOLVEA CHATBOT ── -->
 <script>
